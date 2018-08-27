@@ -1,0 +1,31 @@
+為ubuntu安裝 Webcams(ubuntu桌面/檔案/喜好設定/擴充功能/按'+'/指向Oracle_VM_VirtualBox_Extension_Pack-5.2.16)，參考資料夾與照片。安裝後重開機
+
+把demo1跟demo2資料夾複製到ubuntu裡，準備執行
+
+每次執行前，記得打開Webcams(ubuntu桌面/裝置/Webcams/打勾'USB2.0 HD UVC Webcam')
+
+
+
+(1) demo1 人臉辨識
+
+自動拍照，終端機執行 : python3 capture_images.py s6 1 20
+按 enter 開始自動拍照
+把 s6 資料夾移到 training-data資料夾，並在 labes.txt加入自己的名字
+
+訓練人臉，終端機執行 : python3 Face-Recognition-Train.py labels.txt
+最終，會在 training-data資料夾裡產生 training-data/trainner.yml
+
+人臉辨識，終端機執行 : python3 detect_faces_video.py --prototxt deploy.prototxt.txt --model res10_300x300_ssd_iter_140000.caffemodel
+螢幕可見自己的辨識結果，按 Q 離開
+
+
+
+(2) demo2 人臉識別與追蹤
+
+將 demo1/training-data/trainner.yml 覆蓋到 demo2/training-data/trainner.yml 
+將 demo1/labels.txt 覆蓋 demo2/labels.txt
+
+detect_faces_video.py 第148行改成你的標籤，若辨識到你，即會開始追蹤
+
+身分追蹤，終端機執行 : python3 detect_faces_video.py --prototxt deploy.prototxt.txt --model res10_300x300_ssd_iter_140000.caffemodel
+螢幕可見自己的辨識結果，按2個 Q 離開
